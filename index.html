@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipr Labs - Single Page Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --text-primary: #000000;
+            --bg-secondary: #f4f4f4;
+            --accent-color: #007bff;
+        }
+
+        [data-theme='dark'] {
+            /* Dark Mode Colors */
+            --bg-primary: #121212;
+            --text-primary: #ffffff;
+            --bg-secondary: #1e1e1e;
+            --accent-color: #3498db;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+       
+     
+    /* Content Section Styling */
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            bottom: 94vh;
+            right: 0px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 20px;
+            position: fixed;
+            top: 8px;
+            right: 100px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .navbar-name {
+            display: flex;
+            position: fixed;
+            top: 8px;
+            left: 100px;
+        }
+
+        .navbar-name a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: bold;
+            font-family: sans-serif;
+            font-style: arial;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            position: fixed;
+            top: 8px;
+            right: 10px;
+        }
+
+        /* Section Styles */
+        .section {
+            min-height: 100vh;
+            padding: 80px 5% 50px;
+            scroll-margin-top: 70px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .header h1 {
+            font-size: 5rem;
+            color: var(--black-color);
+            font-stretch: expanded;
+        }
+
+        /* Blog Post Styles */
+        .blog-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+#recent-blogs, #all-blogs {
+  margin-bottom: 40px;
+  padding: 22px;
+}
+
+.recent-blogs-grid, .all-blogs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.blog-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.blog-item h3 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .blog-card {
+            border: 1px solid var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: scale(1.05);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-card-content {
+            padding: 1rem;
+        }
+
+        /* Projects Styles */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            border: 1px solid var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-card-content {
+            padding: 1rem;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+           
+        }
+        .about-content ul{
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            font-weight: bold; 
+            
+        }
+
+        /* Newsletter Section */
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input, 
+        .newsletter-form textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .newsletter-form button {
+    position: relative;
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.newsletter-form button:hover {
+    background-color: #45a049;
+}
+
+.newsletter-form button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg, 
+        transparent, 
+        rgba(255,255,255,0.3), 
+        transparent
+    );
+    transition: all 0.6s ease;
+}
+
+.newsletter-form button:hover::before {
+    left: 100%;
+}
+
+.newsletter-form button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Optional: Add a subtle ripple effect */
+.newsletter-form button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.newsletter-form button:active::after {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+        /* Footer */
+        .footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 1rem 2%;
+            }
+
+            .blog-grid, .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 80px 2% 50px;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    
+
+    <!-- Blog Section -->
+   
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-links">
+            <a href="#blog">Blog</a>
+            <a href="#projects">Projects</a>
+            <a href="#about">About</a>
+            <a href="#newsletter">Newsletter</a>
+        </div>
+        <div class="navbar-name">
+            <a>Digital Orbit</a>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <span data-theme-icon="light">🌞</span>
+            <span data-theme-icon="dark" style="display:none;">🌙</span>
+        </button>
+    </nav>
+
+    <!-- Blog Section -->
+    <div class="blog-container">
+        <!-- Recent Blogs Section -->
+        <section id="recent-blogs">
+            <h2>Recent Blogs</h2>
+            <div class="recent-blogs-grid">
+              <!-- Blog 1 -->
+              <a href="blog1.html" class="blog-item">
+                <img src="images/Image-1.svg" alt="Blog 1">
+                <h3>Migration to Linear 101</h3>
+              </a>
+              <!-- Blog 2 -->
+              <a href="blog2.html" class="blog-item">
+                <img src="images/Image-2.svg" alt="Blog 2">
+                <h3>Building your API Stack</h3>
+              </a>
+              <!-- Add more blogs similarly -->
+            </div>
+          </section>
+      
+        <!-- All Blog Posts Section -->
+        <section id="all-blogs">
+          <h2>All Blog Posts</h2>
+          <div class="all-blogs-grid">
+            <img src="images/Image-1.svg" alt="Blog 2">
+              <h3>Blog Title 2</h3>
+            <!-- Blog items will be dynamically inserted here -->
+          </div>
+          
+
+          <!-- Pagination Controls -->
+          <div class="pagination">
+            <button id="prev-btn">Previous</button>
+            <span id="page-info">Page 1</span>
+            <button id="next-btn">Next</button>
+          </div>
+        </section>
+      </div>
+      
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <header class="header">
+          <h1>PROJECTS</h1>
+        </header>
+      
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <a href="project1.html" class="project-card">
+            <img src="images/Image-16.svg" alt="E-commerce Platform">
+            <div class="project-card-content">
+              <h3>E-commerce Platform</h3>
+              <p>A modern online shopping solution</p>
+            </div>
+          </a>
+          <!-- Project 2 -->
+          <a href="project2.html" class="project-card">
+            <img src="images/Image-14.svg" alt="Social Media Dashboard">
+            <div class="project-card-content">
+              <h3>Social Media Dashboard</h3>
+              <p>Analytics and engagement tracking</p>
+            </div>
+          </a>
+          <!-- Add more projects similarly -->
+        </div>
+      </section>
+      
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <header class="header">
+            <h1>ABOUT US</h1>
+        </header>
+
+        <div class="about-content">
+            <h2>Digital Orbit</h2>
+            <p>Welcome to Digital Orbit, your go-to source for the latest insights, trends, and tutorials in the world of technology. We are passionate about exploring how innovation shapes our lives, from cutting-edge gadgets to transformative software solutions.</p>
+            <h3>Our Mission</h3>
+            <p>Our mission is to simplify technology and make it accessible to everyone. Whether you're a seasoned developer, an aspiring tech enthusiast, or someone curious about the digital world, we aim to provide content that educates, inspires, and empowers.</p>
+            <h4>What we cover</h4>
+            <p>From in-depth product reviews and how-to guides to industry news and thought leadership articles, we cover a wide range of topics, including:</p>
+            <ul><li>Artificial Intelligence and Machine Learning</li>
+                <li>Web Development and Programming</li>
+                <li>Cybersecurity and Privacy</li>
+                <li>Emerging Technologies</li>
+                <li>Tips and Tricks for Everyday Tech Users</li></ul>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="section">
+        <header class="header">
+            <h1>NEWSLETTER</h1>
+        </header>
+
+        <form class="newsletter-form">
+            <input type="text" placeholder="Name" required>
+            <input type="email" placeholder="Email" required>
+            <textarea placeholder="Message" rows="5"></textarea>
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Flipr Labs Blog</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Email</a>
+            <a href="#">RSS</a>
+        </div>
+    </footer>
+
+    <script>
+
+         // Select the menu toggle button and the mobile menu
+          const menuToggle = document.getElementById("menu-toggle");
+          const mobileMenu = document.getElementById("mobile-menu");
+
+         // Add a click event listener to the toggle button
+          menuToggle.addEventListener("click", () => {
+         // Toggle the 'active' class on the mobile menu
+         mobileMenu.classList.toggle("active");
+       });
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            // Update theme
+            body.setAttribute('data-theme', newTheme);
+
+            // Toggle theme icons
+            document.querySelector('[data-theme-icon="light"]').style.display = 
+                newTheme === 'light' ? 'inline' : 'none';
+            document.querySelector('[data-theme-icon="dark"]').style.display = 
+                newTheme === 'dark' ? 'inline' : 'none';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+
+        });
+        const allBlogsGrid = document.querySelector('.all-blogs-grid');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const pageInfo = document.getElementById('page-info');
+
+let blogs = []; // Replace with API call or data source
+let currentPage = 1;
+const blogsPerPage = 5; // Adjust as needed
+
+// Sample Data
+blogs = [
+  { title: "UX review presentation", image: "images/image-1.svg",link:"index1.html" },
+  { title: " Web Designing", image: "images/image-2.svg" },
+  { title: "Grid system for better Design User Interface", image: "images/image-3.svg" },
+  { title: "Bill Walsh leadeership Lessons", image: "images/image-4.svg" },
+  { title: "PM mental models", image: "images/image-5.svg" },
+  { title: "What is Wireframing", image: "images/image-6.svg" },
+  { title: "How collabration makes us better designer", image: "images/image-7.svg" },
+  { title: "Our top 10 Javascript frameworks to use", image: "images/image-8.svg" },
+  { title: "Podcast: Creating a better CX Community", image: "images/image-9.svg" },
+  { title: "UX review presentation", image: "images/image-10.svg" },
+];
+
+function renderBlogs() {
+  allBlogsGrid.innerHTML = ''; // Clear previous blogs
+  const start = (currentPage - 1) * blogsPerPage;
+  const end = start + blogsPerPage;
+  const paginatedBlogs = blogs.slice(start, end);
+
+  paginatedBlogs.forEach(blog => {
+    const blogItem = document.createElement('div');
+    blogItem.classList.add('blog-item');
+    blogItem.innerHTML = `
+      <a href="${blog.link}" style="text-decoration: none; color: inherit;">
+        <img src="${blog.image}" alt="${blog.title}">
+        <h3>${blog.title}</h3>
+      </a>
+    `;
+    allBlogsGrid.appendChild(blogItem);
+  });
+
+  // Update pagination controls
+  pageInfo.textContent = `Page ${currentPage}`;
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = end >= blogs.length;
+}
+
+prevBtn.addEventListener('click', () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderBlogs();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentPage * blogsPerPage < blogs.length) {
+    currentPage++;
+    renderBlogs();
+  }
+});
+
+// Initial Render
+renderBlogs();
+
+    </script>
+</body>
+</html>

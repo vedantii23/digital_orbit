@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Details</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>/* Global Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212; /* Dark background */
+      color: #fff;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #1c1c1c;
+    }
+    
+    .header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    
+    .nav a {
+      margin-left: 20px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    
+    .blog-details-container {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr; /* Left and right sections */
+      gap: 40px;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    
+    .blog-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .blog-title h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .blog-date {
+      font-size: 1rem;
+      color: #aaa;
+    }
+    
+    .blog-description p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin: 0;
+    }
+    
+    .blog-tags {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .tag {
+      background-color: #333;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .blog-right .blog-image {
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .blog-details-container {
+        grid-template-columns: 1fr; /* Single-column layout on smaller screens */
+      }
+    
+      .blog-right {
+        order: -1; /* Move the image above the text */
+      }
+    }
+    </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Your Blog Name</h1>
+    <nav class="nav">
+      <a href="#">Blog</a>
+      <a href="#">Projects</a>
+      <a href="#">About</a>
+      <a href="#">Newsletter</a>
+    </nav>
+  </header>
+
+  <main class="blog-details-container">
+    <!-- Left Section -->
+    <div class="blog-left">
+      <!-- Blog Title -->
+      <div class="blog-title">
+        <h1>Grid System for Better Design User Interface</h1>
+        <p class="blog-date">Sunday, 1 Jan 2023</p>
+      </div>
+
+      <!-- Blog Description -->
+      <div class="blog-description">
+        <p>
+          A grid system is a design tool used to arrange content on a webpage. It is a series of vertical and horizontal lines that create a matrix of intersecting points, which can be used to align and organize page elements. Grid systems are used to create a consistent and logical feel across a website and can help to make the layout more visually appealing and easier to navigate.
+        </p>
+        <p>
+          If you've been to New York City and walked the streets, it is easy to figure out how to get from one place to another because of its grid alignment of streets and avenues. The introduction of a city grid helps locals and tourists get around easily. So why do websites grids provide a structure that guides users and designers alike?
+        </p>
+      </div>
+
+      <!-- Blog Tags -->
+      <div class="blog-tags">
+        <span class="tag">Design</span>
+        <span class="tag">Research</span>
+        <span class="tag">Presentation</span>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="blog-right">
+      <img src="images/Image-19.svg" alt="Grid System Blog Image" class="blog-image">
+    </div>
+  </main>
+</body>
+</html>
